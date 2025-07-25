@@ -104,10 +104,9 @@ def even_odd_page():
     else:
         st.error("Please enter a valid number (digits only).")
         num = None
-    else:
+else:
     num = None
-
-
+    
     # Validate name
     valid_name = re.fullmatch(r"[a-zA-Z\s'-]+", name)
 
