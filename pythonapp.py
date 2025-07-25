@@ -98,10 +98,15 @@ def even_odd_page():
     selected_lang = st.selectbox("🌍 Choose a language:", list(languages.keys()))
 
     # Validate number
-    if num_input.strip().lstrip("-").isdigit():
-        num = int(num_input)
+    if num_input:
+    if re.fullmatch(r"-?\d+", num_input.strip()):
+        num = int(num_input.strip())
     else:
+        st.error("Please enter a valid number (digits only).")
         num = None
+    else:
+    num = None
+
 
     # Validate name
     valid_name = re.fullmatch(r"[a-zA-Z\s'-]+", name)
