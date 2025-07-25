@@ -99,16 +99,14 @@ def even_odd_page():
 
     # Validate number
     if num_input:
-         if re.fullmatch(r"-?\d+", num_input.strip()):
-        num = int(num_input.strip())
-         else:
-        st.error("Please enter a valid number (digits only).")
-        num = None
+        if re.fullmatch(r"-?\d+", num_input.strip()):
+            num = int(num_input.strip())
+        else:
+            st.error("Please enter a valid number (digits only).")
+            num = None
     else:
         num = None
-    
-        
-   
+
     # Validate name
     valid_name = re.fullmatch(r"[a-zA-Z\s'-]+", name)
 
