@@ -21,10 +21,9 @@ def save_user(username, password):
     with open(USER_FILE, "a") as f:
         f.write(f"{username},{password}\n")
 
-# ---------- Session State ----------
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-    st.session_state.username = ""
+# ---------- Ensure Session State Keys Exist ----------
+st.session_state.logged_in = st.session_state.get("logged_in", False)
+st.session_state.username = st.session_state.get("username", "")
 
 # ---------- Background Styling ----------
 def set_background():
@@ -97,19 +96,21 @@ def even_odd_page():
     }
     selected_lang = st.selectbox("🌍 Choose a language:", list(languages.keys()))
 
-    # Validate number
+    # --- Validation ---
+    num = None
     if num_input:
         if re.fullmatch(r"-?\d+", num_input.strip()):
             num = int(num_input.strip())
         else:
             st.error("Please enter a valid number (digits only).")
-            num = None
-    else:
-        num = None
 
-    # Validate name
-    valid_name = re.fullmatch(r"[a-zA-Z\s'-]+", name)
+    valid_name = True
+    if name:
+        if not re.fullmatch(r"[a-zA-Z\s'-]+", name):
+            st.error("Please enter a valid name (letters only).")
+            valid_name = False
 
+    # --- Result Display ---
     if valid_name and num is not None and selected_lang:
         is_even = num % 2 == 0
         result_en = "even" if is_even else "odd 😎"
@@ -133,12 +134,6 @@ def even_odd_page():
         tts.write_to_fp(audio_fp)
         audio_fp.seek(0)
         st.audio(audio_fp, format='audio/mp3')
-
-    elif name and not valid_name:
-        st.error("Please enter a valid name (letters only).")
-
-    elif num_input and num is None:
-        st.error("Please enter a valid number (digits only).")
 
     st.markdown("---")
     st.subheader("🎨 Draw Anything You Like!")
